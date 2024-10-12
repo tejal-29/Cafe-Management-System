@@ -1,0 +1,32 @@
+<%- include('layout/header') %>
+
+<div class="container">
+    <div class="row my-4">
+        <div class="col-lg-12">
+            <h1 class="text-center">Welcome to CafeSerendipity</h1>
+            <p class="text-center">Your one-stop solution for managing your cafe</p>
+            <h2 class="text-center">Our Menu</h2>
+
+            <div class="row mt-4">
+                <% if(menu && menu.length > 0) { %>
+                    <% menu.forEach((row, index) => { %>
+                        <div class="col-md-4 my-3">
+                            <div class="card">
+                                <img src="<%= row.image %>" class="card-img-top" alt="<%= row.name %>">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title"><%= row.name %></h5>
+                                    <p class="card-text">Price: <strong><%= row.price %></strong></p>
+                                    <p class="card-text"><%= row.description %></p>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <h1 class="text-center text-secondary mt-5">No Food items found in the database!</h1>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('layout/footer') %>

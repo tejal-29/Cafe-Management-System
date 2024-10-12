@@ -1,0 +1,19 @@
+<%- include('layout/header') %>
+
+<div class="container">
+    <div class="row my-4">
+        <div class="col-lg-8 offset-lg-2"> <!-- Center the content -->
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title"><%= menu.name %></h2>
+                    <p class="card-text">Category: <%= menu.category %></p>
+                    <p class="card-text">Price: $<%= menu.price %></p>
+                    <p class="card-text">Description: <%= menu.description %></p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('layout/footer') %>

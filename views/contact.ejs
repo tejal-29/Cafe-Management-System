@@ -1,0 +1,15 @@
+<%- include('layout/header') %>
+<h1 class="text-center my-4"><%= title %></h1>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 10vh;">
+    <div class="box">
+        
+        <h3>Contact Information</h3>
+        <ul class="list-unstyled">
+            <% contactInfo.forEach(info => { %>
+                <li><strong><%= info.label %>:</strong> <%= info.value %></li>
+            <% }) %>
+        </ul>
+    </div>
+</div>
+
+<%- include('layout/footer') %>
