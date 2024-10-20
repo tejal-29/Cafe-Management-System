@@ -10,8 +10,7 @@ A Cafe Menu Management System that allows the admin to easily manage the cafe's 
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Screenshots](#screenshots)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Features
 
