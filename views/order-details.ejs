@@ -1,0 +1,90 @@
+
+<%- include('layout/header') %>
+
+<div class="container my-4">
+  <a href="/orders" class="btn btn-outline-secondary mb-3">
+    ← All Orders
+  </a>
+
+  <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+    <div>
+      <h1>Order Details</h1>
+      <h5 class="text-muted"><%= order.orderNumber %></h5>
+    </div>
+
+    <span class="badge text-bg-secondary fs-6">
+      <%= order.status %>
+    </span>
+  </div>
+
+  <div class="card my-4">
+    <div class="card-header"><strong>Customer Information</strong></div>
+    <div class="card-body">
+      <p><strong>Name:</strong> <%= order.customer.name %></p>
+      <p><strong>Phone:</strong> <%= order.customer.phone %></p>
+      <p><strong>Address:</strong> <%= order.customer.address || "Not provided" %></p>
+      <p>
+        <strong>Order Date:</strong>
+        <%= new Date(order.createdAt).toLocaleString("en-IN") %>
+      </p>
+    </div>
+  </div>
+
+  <div class="card my-4">
+    <div class="card-header"><strong>Ordered Menu Items</strong></div>
+    <div class="table-responsive">
+      <table class="table table-striped mb-0">
+        <thead>
+          <tr>
+            <th>Food Item</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% order.items.forEach(item => { %>
+            <tr>
+              <td><%= item.name %></td>
+              <td>₹<%= Number(item.price).toFixed(2) %></td>
+              <td><%= item.quantity %></td>
+              <td>₹<%= (Number(item.price) * item.quantity).toFixed(2) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="3" class="text-end">Order Total</th>
+            <th>₹<%= Number(order.totalAmount).toFixed(2) %></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <div class="card my-4">
+    <div class="card-body">
+      <h5>Update Order Status</h5>
+
+      <form
+        action="/orders/<%= order._id %>/status"
+        method="POST"
+        class="d-flex gap-2 flex-wrap"
+      >
+        <select name="status" class="form-select" style="max-width: 260px" required>
+          <% ["Pending", "Confirmed", "Preparing", "Ready", "Completed", "Cancelled"].forEach(status => { %>
+            <option value="<%= status %>" <%= order.status === status ? "selected" : "" %>>
+              <%= status %>
+            </option>
+          <% }) %>
+        </select>
+
+        <button type="submit" class="btn btn-primary">
+          Update Status
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('layout/footer') %>
