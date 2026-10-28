@@ -4,11 +4,11 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    
-    "start": "node app.js",
-    "dev": "nodemon app.js"
-  },
+  "start": "node main.js",
+  "dev": "nodemon main.js",
+  "test": "echo \"Error: no test specified\" && exit 1"
+},
+
   "author": "Tejal",
   "license": "ISC",
   "dependencies": {

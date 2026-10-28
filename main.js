@@ -9,24 +9,27 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://foodieserendipity.netlify.app",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    credentials: true,
   })
 );
-
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "My secretKey",
-    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: false,
     resave: false,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    },
   })
 );
 
@@ -37,31 +40,37 @@ app.use((req, res, next) => {
   next();
 });
 
-
 app.use(express.static("uploads"));
 app.use("/uploads", express.static("uploads"));
 
-
 app.set("view engine", "ejs");
-
 
 app.use("/", require("./routes/routes"));
 
+async function startServer() {
+  try {
+    if (!process.env.DB_URI) {
+      throw new Error("DB_URI is missing from the .env file");
+    }
 
-mongoose
-  .connect(process.env.DB_URI, {
-    serverSelectionTimeoutMS: 3000,
-    socketTimeoutMS: 45000,
-    family: 4,
-  })
-  .then(() => {
-    console.log("Connected to the database");
-  })
-  .catch((error) => {
-    console.error("MongoDB connection error:", error);
-  });
+    if (!process.env.SESSION_SECRET) {
+      throw new Error("SESSION_SECRET is missing from the .env file");
+    }
 
+    await mongoose.connect(process.env.DB_URI, {
+      serverSelectionTimeoutMS: 10000,
+      family: 4,
+    });
 
-app.listen(PORT, () => {
-  console.log(`Server started at http://localhost:${PORT}`);
-});
+    console.log("Connected to MongoDB successfully");
+
+    app.listen(PORT, () => {
+      console.log(`Server started on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Startup error:", error.message);
+    process.exit(1);
+  }
+}
+
+startServer();
